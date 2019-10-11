@@ -1,25 +1,25 @@
 <?php
 session_start();
-	//Define variables and initialize with empty values
+	
     $csrf = $sid =  "";
 
-	//check if the post data is set correctly
+	
     if(isset($_POST["amount"]) && isset($_POST['csrf'])){
-		//check if the csrf cookie is set
-        if(isset($_COOKIE["csrf"])){
+		
+        if(isset($_COOKIE["csrf"])){   //checking if the CSRF cookie is set and passing it into a variable
             $csrf = $_COOKIE["csrf"];
         }
-		//compare the csrf token cookie and the post csrf token
-        if($csrf != $_POST["csrf"]){
+		
+        if($csrf != $_POST["csrf"]){    //comparing the CSRF cookie and the CSRF in POST data
             $messege = "Invalid CSRF token.";
         }
-		//validate entered amount
+		
         elseif(!is_numeric($_POST["amount"])){
             $messege = "Please enter a valid amount";
         }
-		//if no errors transfer money
+		
         else{
-            $messege = "$".$_POST["amount"]." Credited";
+            $messege = "$".$_POST["amount"]." Credited";  //Sucessfully credited 
         }
     }
     else{
@@ -27,7 +27,8 @@ session_start();
     }
 echo $messege;
 
-//unset csrf token from cookies
+//Cleaning the cookie set by selecting and unsetting the CSRF token
+
 $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
     foreach($cookies as $cookie) {
         $parts = explode('=', $cookie);
